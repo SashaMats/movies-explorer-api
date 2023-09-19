@@ -36,13 +36,13 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.find({ _id: req.params.cardId })
+  Movie.findById({ _id: req.params.cardId })
     .then((mov) => {
-      if (mov.length === 0) {
+      if (!mov) {
         throw (new NotFoundError('Фильм не найден'));
       } if (req.user._id !== mov.owner.toString()) {
         throw (new ForbiddenError('У вас нет прав для совершения этого действия'));
-      } Movie.deleteOne(mov)
+      } Movie.findOne(mov)
         .then(() => res.send({ message: 'Фильм удален' }))
         .catch(next);
     })

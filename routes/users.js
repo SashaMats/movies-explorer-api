@@ -1,8 +1,8 @@
 const usersRouter = require('express').Router();
 const { getUser, refreshUser } = require('../controllers/users');
-const { emailPassUserValidation } = require('../utils/validation');
+const { emailNameUserValidation } = require('../utils/validation');
 
 usersRouter.get('/me', getUser);
-usersRouter.patch('/me', emailPassUserValidation, refreshUser);
+usersRouter.patch('/me', emailNameUserValidation, refreshUser);
 
 module.exports = usersRouter;
