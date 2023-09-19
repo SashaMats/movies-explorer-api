@@ -42,7 +42,7 @@ module.exports.deleteMovie = (req, res, next) => {
         throw (new NotFoundError('Фильм не найден'));
       } if (req.user._id !== mov.owner.toString()) {
         throw (new ForbiddenError('У вас нет прав для совершения этого действия'));
-      } Movie.findOne(mov)
+      } Movie.deleteOne(mov)
         .then(() => res.send({ message: 'Фильм удален' }))
         .catch(next);
     })
