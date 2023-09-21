@@ -76,6 +76,8 @@ module.exports.refreshUser = (req, res, next) => {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
       } else if (err.name === 'CastError') {
         next(new NotFoundError('Пользователь с указанным _id не найден'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Пользователь с такими данными уже зарегистрирован'));
       } else { next(err); }
     });
 };

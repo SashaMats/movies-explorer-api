@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cors = require('cors');
-const indexRouter = require('./routes/index');
-const { auth } = require('./middlewares/auth');
+const helmet = require('helmet');
+const indexRoutes = require('./routes/index');
 const { checkError } = require('./middlewares/checkError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/limiter');
@@ -17,6 +17,7 @@ const app = express();
 app.use(cors());
 
 app.use(limiter);
+app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,13 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 mongoose.connect(DB_ADRESS);
-app.use('/signup', indexRouter.signupRouter);
-app.use('/signin', indexRouter.signinRouter);
 
-app.use(auth);
-
-app.use('/movies', indexRouter.moviesRouter);
-app.use('/users', indexRouter.usersRouter);
+app.use('/', indexRoutes);
 
 app.use(errorLogger);
 app.use(errors());

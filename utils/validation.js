@@ -20,13 +20,13 @@ module.exports.cardValidation = celebrate({
     nameEn: Joi.string().required().min(2)
       .max(30),
     thumbnail: Joi.string().required().pattern(urlPattern),
-    movieId: Joi.string().length(24).hex().required(),
+    movieId: Joi.number().required(),
   }),
 });
 
 module.exports.idValidation = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().length(24).required(),
+    cardId: Joi.string().length(24).hex().required(),
   }),
 });
 
