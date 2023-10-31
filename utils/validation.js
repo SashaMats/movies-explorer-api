@@ -1,4 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
+
 // const urlPattern = require('./constants');
 
 module.exports.cardValidation = celebrate({
