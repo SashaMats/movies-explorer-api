@@ -33,12 +33,12 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError('Неправильные почта или пароль;;;');
+        throw new UnauthorizedError('Вы ввели неправильный логин или пароль');
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new UnauthorizedError('Неправильные почта или пароль+++');
+            throw new UnauthorizedError('Вы ввели неправильный логин или пароль');
           }
           const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
           res.send({ token });
@@ -77,7 +77,7 @@ module.exports.refreshUser = (req, res, next) => {
       } else if (err.name === 'CastError') {
         next(new NotFoundError('Пользователь с указанным _id не найден'));
       } else if (err.code === 11000) {
-        next(new ConflictError('Пользователь с такими данными уже зарегистрирован'));
+        next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       } else { next(err); }
     });
 };
